@@ -1,6 +1,8 @@
 const Header = ({course}) => <h1>{course}</h1> ;
 
-const Content = ({parts}) => parts.map((part, idx )=> <p key={idx}>{part.title} {part.exercises}</p>);
+const Part = ({part, idx}) => <p key={idx}>{part.title} {part.exercises}</p>
+
+const Content = ({parts}) => parts.map((part, idx) => <Part part={part} key={idx} idx={idx}/>);
 
 const Total = ({parts}) => <p>Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}</p>
 
