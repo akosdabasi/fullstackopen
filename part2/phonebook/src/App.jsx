@@ -1,9 +1,16 @@
 import { useState } from 'react'
+import PhoneBook from './components/PhoneBook'
+import Search from './components/Search'
+import  Form  from './components/Form'
+
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '06203140000' }
-  ]) 
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+  ])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [search, setSearch] = useState('')
@@ -30,27 +37,18 @@ const App = () => {
 
   const handleSearchChange = (e)=>{
     //console.log(e);
-    setSearch(e.target.value);
+    setSearch(e.target.value); 
   }
 
   return (
     <div>
       <h1>Phonebook</h1>
-      search: <input onChange={handleSearchChange}/>
+      <Search handleSearchChange={handleSearchChange}/>
       <h2>Add new</h2>
-      <form onSubmit={handleNameSubmit}>
-        <div>
-          name: <input onChange={handleNameChange} />
-        </div>
-        <div>
-          phone: <input onChange={handlePhoneChange} />
-        </div>
-        <div>
-          <button type="submit" >add</button>
-        </div>
-      </form>
+      <Form handleNameChange={handleNameChange} handlePhoneChange={handlePhoneChange} handleNameSubmit={handleNameSubmit}/>
       <h2>Numbers</h2>
-      {persons.filter(person => person.name.toLowerCase().startsWith(search.toLocaleLowerCase())).map(person => <p key={person.name}>{person.name} {person.phone}</p>)}
+      <PhoneBook persons={persons} search={search}/>
+      
     </div>
   )
 }
