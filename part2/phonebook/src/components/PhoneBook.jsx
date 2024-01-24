@@ -1,7 +1,21 @@
-const PhoneBook = ({persons, search, handleDelete}) => persons.filter(person => person.name.toLowerCase().startsWith(search.toLocaleLowerCase())).map(person => 
-<span key={person.id}>
-    <p>{person.name} {person.number}</p>
-    <button onClick={() => handleDelete(person.id)}>delete</button>
-</span>)
+import "./PhoneBook.css";
 
-export default PhoneBook
+const PhoneBook = ({ persons, search, handleDelete }) =>
+  persons
+    .filter((person) =>
+      person.name.toLowerCase().startsWith(search.toLocaleLowerCase())
+    )
+    .map((person) => (
+      <div key={person.id}>
+        <span className="data">{person.name}</span>
+        <span className="data">{person.number}</span>
+        <button
+          className="deleteButton"
+          onClick={() => handleDelete(person.id)}
+        >
+          delete
+        </button>
+      </div>
+    ));
+
+export default PhoneBook;
