@@ -37,6 +37,7 @@ app.use(
 );
 
 app.use(cors());
+app.use(express.static());
 
 //Routes
 app.get("/", (req, res) => {
