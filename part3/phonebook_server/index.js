@@ -29,7 +29,7 @@ let persons = [
 
 //Middleware
 
-if (process.env.STAT) app.use(express.static("dist"));
+app.use(express.static("dist"));
 app.use(cors());
 app.use(express.json());
 
