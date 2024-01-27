@@ -1,26 +1,27 @@
 const express = require("express");
 const { v4 } = require("uuid");
 const morgan = require("morgan");
+const cors = require("cors");
 const app = express();
 
 let persons = [
   {
-    id: 1,
+    id: v4(),
     name: "Arto Hellas",
     number: "040-123456",
   },
   {
-    id: 2,
+    id: v4(),
     name: "Ada Lovelace",
     number: "39-44-5323523",
   },
   {
-    id: 3,
+    id: v4(),
     name: "Dan Abramov",
     number: "12-43-234345",
   },
   {
-    id: 4,
+    id: v4(),
     name: "Mary Poppendieck",
     number: "39-23-6423122",
   },
@@ -29,20 +30,13 @@ let persons = [
 //Middleware
 
 app.use(express.json());
-/*const requestLogger = (req, res, next) => {
-  console.log(`
-    method: ${req.method}    
-    path: ${req.path}    
-    body: ${JSON.stringify(req.body)}    
-    `);
-  next();
-};
-app.use(requestLogger);*/
 
 morgan.token("body", (req) => JSON.stringify(req.body));
 app.use(
   morgan(":method :url :status :response-time ms - :res[content-length] :body")
 );
+
+app.use(cors());
 
 //Routes
 app.get("/", (req, res) => {
@@ -69,8 +63,8 @@ app.get("/api/persons/:id", (req, res) => {
 });
 
 app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  persons = persons.filter((pers) => pers.id != id);
+  const id = req.params.id;
+  persons = persons.filter((pers) => pers.id !== id);
 
   res.status(204).send();
 });
