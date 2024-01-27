@@ -4,8 +4,8 @@ import axios from "axios";
 import API_KEY from "./secrets";
 
 const baseURL = "https://studies.cs.helsinki.fi/restcountries/api";
+
 function App() {
-  const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [countries, setCountries] = useState([]);
   const [weather, setWeather] = useState({});
