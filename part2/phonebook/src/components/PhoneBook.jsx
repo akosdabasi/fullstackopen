@@ -6,7 +6,7 @@ const PhoneBook = ({ persons, search, handleDelete }) =>
       person.name.toLowerCase().startsWith(search.toLocaleLowerCase())
     )
     .map((person) => (
-      <div key={person.id}>
+      <div key={person._id}>
         <span className="data">{person.name}</span>
         <span className="data">{person.number}</span>
         <button

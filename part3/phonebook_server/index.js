@@ -45,45 +45,51 @@ app.get("/info", (req, res) => {
     `);
 });
 
-app.get("/api/persons", (req, res) => {
-  Person.find({}).then(persons => res.json(persons));
+app.get("/api/persons", (req, res, next) => {
+  Person.find({})
+    .then(persons => res.json(persons))
+    .catch(err => next(err));
 });
 
-app.get("/api/persons/:id", (req, res) => {
-  const id = req.params.id;
-  Person.findById(id)
+app.get("/api/persons/:id", (req, res, next) => {
+  Person.findById(req.params.id)
     .then(person => {
       if(person)
         res.json(person);
       else
         res.status(404).end();
     })
-    .catch(err => console.log(err))
+    .catch(err => next(err));
 });
 
-app.delete("/api/persons/:id", (req, res) => {
-  const id = req.params.id;
-  console.log(id); 
-  Person.findByIdAndDelete(id)
+app.delete("/api/persons/:id", (req, res, next) => {
+  Person.findByIdAndDelete(req.params.id)
   .then( deleted => {
     if(deleted) res.status(204).send();
     else res.status(404).send(`document doesn't exist`);
   })
-  .catch(err => res.status(400).send(err)) 
+  .catch(err => next(err)); 
 });
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
   const data = req.body;
-  if (!data.name || !data.number)
+  if(!data.name || !data.number)
     return res.status(400).send(`name and number fields are mandatory`);
-  /*if (persons.find((pers) => pers.name === data.name))
-    return res.status(400).send(`name has to be unique`);*/
-  const newPerson = {
-    name: data.name,
-    number: data.number,
-  };
-  Person.create(newPerson).then(response => res.json(response));
-});
+
+  Person.find({name: data.name})
+    .then(person => {
+      console.log(person);
+      if(person.length) 
+        res.status(400).send('name has to be unique');
+      else
+      {
+        return Person.create({name: data.name, number: data.number});
+      }
+    })
+    .then(person => res.json(person))
+  
+})
+ 
 
 //Middleware
 const unknownEndpoint = (request, response) => {
