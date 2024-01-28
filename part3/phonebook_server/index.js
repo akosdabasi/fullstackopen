@@ -11,6 +11,7 @@ const Person = require('./models/person');
 
 
 
+//environment variables
 const MONGO_URI = process.env.MONGODB_URI;
 const PORT = process.env.PORT || 3001;
 
@@ -66,15 +67,13 @@ app.post("/api/persons", (req, res) => {
   const data = req.body;
   if (!data.name || !data.number)
     return res.status(400).send(`name and number fields are mandatory`);
-  if (persons.find((pers) => pers.name === data.name))
-    return res.status(400).send(`name has to be unique`);
+  /*if (persons.find((pers) => pers.name === data.name))
+    return res.status(400).send(`name has to be unique`);*/
   const newPerson = {
-    id: v4(),
     name: data.name,
     number: data.number,
   };
-  persons.push(newPerson);
-  res.json(newPerson);
+  Person.create(newPerson).then(response => res.json(response));
 });
 
 //Middleware
