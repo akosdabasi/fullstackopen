@@ -67,9 +67,9 @@ app.delete("/api/persons/:id", (req, res) => {
   Person.findByIdAndDelete(id)
   .then( deleted => {
     if(deleted) res.status(204).send();
-    else res.status(400).send(`couldn't delete`);
+    else res.status(500).send(`couldn't delete`);
   })
-  .catch(err => res.status(500).send(err)) 
+  .catch(err => res.status(400).send(err)) 
 });
 
 app.post("/api/persons", (req, res) => {
