@@ -67,7 +67,7 @@ app.delete("/api/persons/:id", (req, res) => {
   Person.findByIdAndDelete(id)
   .then( deleted => {
     if(deleted) res.status(204).send();
-    else res.status(500).send(`couldn't delete`);
+    else res.status(404).send(`document doesn't exist`);
   })
   .catch(err => res.status(400).send(err)) 
 });

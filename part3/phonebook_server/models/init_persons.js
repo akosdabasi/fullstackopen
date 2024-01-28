@@ -17,6 +17,7 @@ const Person = mongoose.model('Person', personSchema);
 
 async function savePersonsAndClose(persons) {
     try {
+        await Person.deleteMany({});
         // Save multiple documents to the database
         await Person.create(persons);
 
