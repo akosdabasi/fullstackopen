@@ -50,17 +50,26 @@ app.get("/api/persons", (req, res) => {
 });
 
 app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find((pers) => pers.id === id);
-  if (person) res.json(person);
-  else res.status(404).end();
+  const id = req.params.id;
+  Person.findById(id)
+    .then(person => {
+      if(person)
+        res.json(person);
+      else
+        res.status(404).end();
+    })
+    .catch(err => console.log(err))
 });
 
 app.delete("/api/persons/:id", (req, res) => {
   const id = req.params.id;
-  persons = persons.filter((pers) => pers.id !== id);
-
-  res.status(204).send();
+  console.log(id); 
+  Person.findByIdAndDelete(id)
+  .then( deleted => {
+    if(deleted) res.status(204).send();
+    else res.status(400).send(`couldn't delete`);
+  })
+  .catch(err => res.status(500).send(err)) 
 });
 
 app.post("/api/persons", (req, res) => {

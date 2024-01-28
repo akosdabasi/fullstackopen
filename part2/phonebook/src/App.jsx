@@ -53,7 +53,7 @@ const App = () => {
       phoneBookService.update(newPerson).then((_) => {
         setPersons(
           persons.map((person) =>
-            person.id === foundPerson.id ? newPerson : person
+            person._id === foundPerson._id ? newPerson : person
           )
         );
         createPopUp(`${newPerson.name} number has been updated`, "info", 3000);
@@ -71,7 +71,7 @@ const App = () => {
       phoneBookService
         .remove(id)
         .then((res) => {
-          setPersons(persons.filter((person) => person.id !== id));
+          setPersons(persons.filter((person) => person._id !== id));
           createPopUp(
             "Person has been deleted from the phonebook",
             "info",

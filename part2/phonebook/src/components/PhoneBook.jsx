@@ -11,7 +11,7 @@ const PhoneBook = ({ persons, search, handleDelete }) =>
         <span className="data">{person.number}</span>
         <button
           className="deleteButton"
-          onClick={() => handleDelete(person.id)}
+          onClick={() => handleDelete(person._id)}
         >
           delete
         </button>
