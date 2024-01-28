@@ -36,28 +36,26 @@ const App = () => {
     e.preventDefault();
     const foundPerson = persons.find((obj) => obj.name === newName);
 
-    if (!foundPerson) {
-      phoneBookService
-        .create({ name: newName, number: newNumber })
-        .then((newPerson) => {
+    if(!foundPerson) 
+    {
+      phoneBookService.create({ name: newName, number: newNumber })
+        .then((newPerson) => 
+        {
           setPersons(persons.concat(newPerson));
           createPopUp(`${newPerson.name} has been created`, "info", 3000);
         })
         .catch(err => createPopUp(err.response.data,"error", 3000));
-    } else if (
-      window.confirm(
-        `${newName} is already in the phonebook.\nDo you wish to update his number?`
-      )
-    ) {
+    } 
+    else if(window.confirm(`${newName} is already in the phonebook.\nDo you wish to update his number?`)) 
+    {
       const newPerson = { ...foundPerson, number: newNumber };
-      phoneBookService.update(newPerson).then((_) => {
-        setPersons(
-          persons.map((person) =>
-            person._id === foundPerson._id ? newPerson : person
-          )
-        );
-        createPopUp(`${newPerson.name} number has been updated`, "info", 3000);
-      });
+      phoneBookService.update(newPerson)
+        .then(updatedPerson => 
+        {
+          setPersons(persons.map(person =>person._id === foundPerson._id ? updatedPerson : person));
+          createPopUp(`${newPerson.name} number has been updated`, "info", 3000);
+        })
+        .catch(err => createPopUp(err.response.data,"error", 3000));
     }
   };
 

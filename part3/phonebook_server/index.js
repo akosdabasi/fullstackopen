@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
 app.get("/info", (req, res) => {
   const currentTime = new Date();
   res.send(`
-    <p>Phonebook has info for ${persons.length}<p/>
+    <p>Phonebook has info for ${Person.length}<p/>
     <p>${currentTime.toString()}<p/>
     `);
 });
@@ -88,6 +88,16 @@ app.post("/api/persons", (req, res, next) => {
     })
     .then(person => res.json(person))
   
+})
+
+app.put("/api/persons/:id", (req, res, next) => {
+  const body = req.body;
+  if(!body.number)
+    return res.status(400).send(`number is mandatory`);
+
+  Person.findByIdAndUpdate(req.params.id, {name: body.name, number: body.number}, {new: true})
+    .then(person => res.json(person))
+    .catch(err => next(err));
 })
  
 
