@@ -31,6 +31,7 @@ const App = () => {
     setMessageType(type);
     setTimeout(() => setMessage(null), time);
   };
+
   const handleNameSubmit = (e) => {
     e.preventDefault();
     const foundPerson = persons.find((obj) => obj.name === newName);
@@ -41,7 +42,8 @@ const App = () => {
         .then((newPerson) => {
           setPersons(persons.concat(newPerson));
           createPopUp(`${newPerson.name} has been created`, "info", 3000);
-        });
+        })
+        .catch(err => createPopUp(err.response.data,"error", 3000));
     } else if (
       window.confirm(
         `${newName} is already in the phonebook.\nDo you wish to update his number?`

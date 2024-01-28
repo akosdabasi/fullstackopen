@@ -6,7 +6,7 @@ const Form = ({ handleNameChange, handlePhoneChange, handleNameSubmit }) => (
       name: <input onChange={handleNameChange} />
     </div>
     <div className="input">
-      phone: <input onChange={handlePhoneChange} />
+      number: <input onChange={handlePhoneChange} />
     </div>
     <div>
       <button className="addButton" type="submit">
