@@ -1,31 +1,24 @@
+require('dotenv').config();
+
 const express = require("express");
 const { v4 } = require("uuid");
 const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
 
-let persons = [
-  {
-    id: v4(),
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: v4(),
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: v4(),
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: v4(),
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
+const mongoose = require("mongoose");
+const Person = require('./models/person');
+
+
+
+const MONGO_URI = process.env.MONGODB_URI;
+const PORT = process.env.PORT || 3001;
+
+
+mongoose.set('strictQuery',false);
+mongoose.connect(MONGO_URI).then(_=>console.log("connected to mongo..."));
+
+
 
 //Middleware
 
@@ -52,7 +45,7 @@ app.get("/info", (req, res) => {
 });
 
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
+  Person.find({}).then(persons => res.json(persons));
 });
 
 app.get("/api/persons/:id", (req, res) => {
@@ -92,5 +85,4 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint);
 
 //Starting server
-const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
