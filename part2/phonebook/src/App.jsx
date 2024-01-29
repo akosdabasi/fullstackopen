@@ -44,7 +44,11 @@ const App = () => {
           setPersons(persons.concat(newPerson));
           createPopUp(`${newPerson.name} has been created`, "info", 3000);
         })
-        .catch(err => createPopUp(err.response.data,"error", 3000));
+        .catch(err => 
+        {
+          console.log(err);
+          createPopUp(err.response.data.error,"error", 3000);
+        });
     } 
     else if(window.confirm(`${newName} is already in the phonebook.\nDo you wish to update his number?`)) 
     {
@@ -55,7 +59,7 @@ const App = () => {
           setPersons(persons.map(person =>person._id === foundPerson._id ? updatedPerson : person));
           createPopUp(`${newPerson.name} number has been updated`, "info", 3000);
         })
-        .catch(err => createPopUp(err.response.data,"error", 3000));
+        .catch(err => createPopUp(err.response.data.error,"error", 3000));
     }
   };
 

@@ -87,6 +87,7 @@ app.post("/api/persons", (req, res, next) => {
       }
     })
     .then(person => res.json(person))
+    .catch(err => next(err))
   
 })
 
@@ -95,10 +96,10 @@ app.put("/api/persons/:id", (req, res, next) => {
   if(!body.number)
     return res.status(400).send(`number is mandatory`);
 
-  Person.findByIdAndUpdate(req.params.id, {name: body.name, number: body.number}, {new: true})
+  Person.findByIdAndUpdate(req.params.id, {name: body.name, number: body.number}, {new: true, runValidators: true, context: 'query'})
     .then(person => res.json(person))
     .catch(err => next(err));
-})
+}) 
  
 
 //Middleware
@@ -108,12 +109,16 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint);
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  //console.error(error.message)
 
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
-
+  if(error.name === 'CastError')
+  {
+    return response.status(400).send({ error: 'malformatted id' });
+  }  
+  else if(error.name === 'ValidationError') 
+  {
+    return response.status(400).send({ error: error.message });
+  }
   next(error)
 }
 
